@@ -7,21 +7,21 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.nio.channels.FileLockInterruptionException;
+//import java.nio.channels.FileLockInterruptionException;
 import java.util.ArrayList;
 
 public class FlashCardPlayer {
 
    private ArrayList<FlashCard> flashCards;
-   private boolean este_intrebare;
-   private FlashCard card_actual;
-   private JTextArea jTextArea;
-   private ArrayList<String> texte;
+   private JTextArea jTextArea1;
+   private JTextArea jTextArea2;
+   private int flasCardActual;
 
     FlashCardPlayer(){
-        texte=new ArrayList<>();
+        flasCardActual = 0;
         flashCards=new ArrayList<>();
-        jTextArea=new JTextArea(10,15);
+        jTextArea1=new JTextArea(10,15);
+        jTextArea2=new JTextArea(10,15);
 
 
         JMenuBar jMenuBar=new JMenuBar();
@@ -40,19 +40,28 @@ public class FlashCardPlayer {
         jframe.setJMenuBar(jMenuBar);
 
 
-        JPanel jPanel=new JPanel();
-        JScrollPane jScrollPane=new JScrollPane(jTextArea);
+        JPanel jPanel1=new JPanel();
+        JScrollPane jScrollPane=new JScrollPane(jTextArea1);
         jScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 
 
-        jPanel.add(jScrollPane);
+        jPanel1.add(jScrollPane);
 
-        JButton jButton=new JButton("Urmatoarea carte");
+        JButton jButton1=new JButton("Afiseaza raspunsul");
 
-        jPanel.add(jButton);
-        jframe.add(jPanel);
+        jPanel1.add(jButton1);
+        jframe.add(jPanel1);
+        JPanel jPanel2=new JPanel();
+        JScrollPane jScrollPane2=new JScrollPane(jTextArea2);
+        jScrollPane2.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane2.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 
+        JButton jButton2=new JButton("Urmatoarea carte");
+
+        jPanel2.add(jScrollPane2);
+        jPanel2.add(jButton2);
+        jframe.add(jPanel2);
 
 
 
@@ -64,14 +73,7 @@ public class FlashCardPlayer {
                 JFileChooser jFileChooser=new JFileChooser();
                 jFileChooser.showOpenDialog(jframe);
                 OPENFILE(jFileChooser.getSelectedFile());
-                for(FlashCard flashCard : flashCards ){
-                    System.out.println(flashCard.getQuestion());
-                    texte.add(new String(  flashCard.getQuestion()));
-                    texte.add(new String( flashCard.getAnswer()));
-
-
-                }
-                jTextArea.setText(texte.get(0));
+                jTextArea1.setText(flashCards.get(0).getQuestion());
 
             }
         });
@@ -79,17 +81,24 @@ public class FlashCardPlayer {
 
         //int text_actual=1;
 
-        jButton.addActionListener(new ActionListener() {
-            int text_actual=1;
+        jButton1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                jTextArea.setText(texte.get(text_actual%(texte.size()-2)));
-                text_actual++;
+                jTextArea2.setText(flashCards.get(flasCardActual%(flashCards.size()-1)).getAnswer());
 
 
             }
-        }
+        });
 
+                jButton2.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        flasCardActual++;
+                        jTextArea1.setText(flashCards.get(flasCardActual%(flashCards.size()-1)).getQuestion());
+                        jTextArea2.setText("");
+
+                    }
+                }
 
         );
 
@@ -114,7 +123,7 @@ public class FlashCardPlayer {
 
                 String aux1,aux2;
                 aux1=aux.substring(0,aux.lastIndexOf("\\"));
-                aux2=aux.substring(aux.lastIndexOf("\\")+1,aux.length());
+                aux2=aux.substring(aux.lastIndexOf("\\")+1);
                 flashCards.add(new FlashCard(aux1,aux2));
 
 
