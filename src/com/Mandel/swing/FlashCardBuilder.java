@@ -2,8 +2,6 @@ package com.Mandel.swing;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -12,7 +10,7 @@ import java.util.ArrayList;
 public class FlashCardBuilder {
     private JTextArea question;
     private JTextArea answer;
-    private ArrayList<FlashCard> flashCards;
+    private ArrayList<com.Mandel.swing.FlashCard> flashCards;
     private JFrame jFrame;
 
 
@@ -79,9 +77,8 @@ public class FlashCardBuilder {
         JLabel jLabel3=new JLabel("");
 
 
-        jButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        jButton.addActionListener((e)-> {
+
                 if (question.getText().length() == 0) {
                     jLabel2.setText("Nu ai introdus nicio intrebare");
                 }
@@ -106,7 +103,7 @@ public class FlashCardBuilder {
                 }
 
 
-            }
+
         });
         jPanel.add(jLabel2);
         jPanel.add(jLabel3);
@@ -122,9 +119,8 @@ public class FlashCardBuilder {
 
 
 
-        sMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+        sMenuItem.addActionListener((e)-> {
+
 
                 if (answer.getText().length() > 0 && question.getText().length() > 0) {
                     FlashCard flashCard = new FlashCard(question.getText(), answer.getText());
@@ -142,24 +138,20 @@ public class FlashCardBuilder {
                 FlashCardBuilder.this.SAVEFILE(savefile.getSelectedFile());
 
 
-            }
+
         });
 
 
-        jMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                flashCards.clear();
-            }
-        });
+        jMenuItem.addActionListener((e)->
+
+                flashCards.clear()
+
+        );
 
 
-        sMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
+//        sMenuItem.addActionListener((e)-> {
+//
+//        });
 
 
         jFrame.setJMenuBar(jMenuBar);
@@ -198,11 +190,8 @@ public class FlashCardBuilder {
     {
 
 
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new FlashCardBuilder();
-            }
-        });
+        SwingUtilities.invokeLater(FlashCardBuilder::new
+
+        );
     }
 }

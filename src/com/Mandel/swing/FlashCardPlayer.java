@@ -2,12 +2,9 @@ package com.Mandel.swing;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-//import java.nio.channels.FileLockInterruptionException;
 import java.util.ArrayList;
 
 public class FlashCardPlayer {
@@ -17,7 +14,7 @@ public class FlashCardPlayer {
    private JTextArea jTextArea2;
    private int flasCardActual;
 
-    FlashCardPlayer(){
+   private FlashCardPlayer(){
         flasCardActual = 0;
         flashCards=new ArrayList<>();
         jTextArea1=new JTextArea(10,15);
@@ -66,38 +63,32 @@ public class FlashCardPlayer {
 
 
 
-        jMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+        jMenuItem.addActionListener((e)-> {
+
 
                 JFileChooser jFileChooser=new JFileChooser();
                 jFileChooser.showOpenDialog(jframe);
                 OPENFILE(jFileChooser.getSelectedFile());
                 jTextArea1.setText(flashCards.get(0).getQuestion());
 
-            }
+
         });
 
 
-        //int text_actual=1;
 
-        jButton1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                jTextArea2.setText(flashCards.get(flasCardActual%(flashCards.size()-1)).getAnswer());
+        jButton1.addActionListener((e)->
 
+                jTextArea2.setText(flashCards.get(flasCardActual%(flashCards.size()-1)).getAnswer())
 
-            }
-        });
+        );
 
-                jButton2.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
+                jButton2.addActionListener((e)-> {
+
                         flasCardActual++;
                         jTextArea1.setText(flashCards.get(flasCardActual%(flashCards.size()-1)).getQuestion());
                         jTextArea2.setText("");
 
-                    }
+
                 }
 
         );
@@ -137,7 +128,7 @@ public class FlashCardPlayer {
 
         }
         catch(Exception e){
-            System.out.println(e.fillInStackTrace());
+            e.printStackTrace();
         }
 
 
@@ -146,14 +137,9 @@ public class FlashCardPlayer {
 
     public static void main(String[] args) {
 
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
+        SwingUtilities.invokeLater(FlashCardPlayer::new
 
-                new FlashCardPlayer();
-
-            }
-        });
+        );
 
 
     }
